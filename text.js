@@ -15,8 +15,9 @@ export class HoodsText extends Component {
 
 const styles = StyleSheet.create({
 	text: {
+		color: settings.black,
 		fontSize: settings.body_size,
 		fontFamily: settings.body_family,
-		backgroundColor: 'transparent'
+		padding: settings.gutter
 	}
 })

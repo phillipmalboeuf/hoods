@@ -16,8 +16,6 @@ export class HoodsMap extends Component {
 	constructor() {
 		super()
 
-		this.state = {}
-
 		fetch('http://127.0.0.1:8080/maps/585d88efd6454d2f21de701f', {headers: {'Accept': 'application/json'}})
 		.then((response) => response.json())
 		.then((json) => {
@@ -26,19 +24,30 @@ export class HoodsMap extends Component {
 	}
 
 	render() {
-		return (
-			<View>
-				<HoodsText style={styles.title}>{this.state.title}</HoodsText>
-				<MapView style={styles.map}
-					styleURL={this.state.style}
-					initialCenterCoordinate={this.state.center}
-					initialZoomLevel={this.state.zoom}
-					annotationsPopUpEnabled={false}
-					pitchEnabled={false}
-					compassIsHidden={true}
-					logoIsHidden={true} />
-			</View>
-		)
+
+		if (this.state != undefined) {
+			return (
+				<View>
+					<HoodsText style={styles.title}>{this.state.title}</HoodsText>
+					<MapView style={styles.map}
+						ref={map => { this.map = map }}
+						styleURL={this.state.style}
+						initialCenterCoordinate={{
+							latitude: this.state.center.latitude,
+							longitude: this.state.center.longitude
+						}}
+						initialZoomLevel={this.state.zoom}
+						annotationsPopUpEnabled={false}
+						pitchEnabled={false}
+						compassIsHidden={true}
+						logoIsHidden={true} />
+				</View>
+			)
+		} else {
+			return (
+				<View></View>
+			)
+		}
 	}
 }
 
@@ -52,6 +61,7 @@ const styles = StyleSheet.create({
 		top: 0,
 		left: 0,
 		zIndex: 2,
+		paddingLeft: settings.tight_gutter,
 		backgroundColor: 'transparent'
 	}
 })
