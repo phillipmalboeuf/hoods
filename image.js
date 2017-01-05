@@ -8,14 +8,12 @@ export class HoodsImage extends Component {
 
 	render() {
 		return (
-			<Image style={styles.image} resizeMode={this.props.resizeMode} source={this.props.source} />
+			<Image style={[styles.image, this.props.style]} resizeMode={this.props.resizeMode} source={this.props.source} />
 		)
 	}
 }
 
 const styles = StyleSheet.create({
 	image: {
-		width: Dimensions.get('window').width,
-		height: Dimensions.get('window').height/4
 	}
 })

@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 
-import { settings } from './settings.js';
-
 import Mapbox from 'react-native-mapbox-gl';
-import { MapView } from 'react-native-mapbox-gl';
+import { MapView, Annotation } from 'react-native-mapbox-gl';
 
+import { settings } from './settings.js';
 import { HoodsText } from './text.js';
+import { HoodsSpot } from './spot.js';
 
 Mapbox.setAccessToken('pk.eyJ1IjoicGhpbGxpcG1hbGJvZXVmIiwiYSI6IndpQUx1SDAifQ.Ie3-MUxMAPbr7tr2IgFHHw')
 
 
 export class HoodsMap extends Component {
+
 
 	constructor() {
 		super()
@@ -40,7 +41,20 @@ export class HoodsMap extends Component {
 						annotationsPopUpEnabled={false}
 						pitchEnabled={false}
 						compassIsHidden={true}
-						logoIsHidden={true} />
+						logoIsHidden={true}>
+
+						{this.state.spots.map(spot => (
+							<HoodsSpot 
+								_id={spot._id} key={spot._id}
+								title={spot.title}
+								description={spot.description}
+								coordinates={spot.coordinates}
+								category={spot.category}
+								isFocused={spot._id == this.state.focusedSpot}
+								onPress={this.centerSpot.bind(this)} />
+						))}
+
+					</MapView>
 				</View>
 			)
 		} else {
@@ -48,6 +62,13 @@ export class HoodsMap extends Component {
 				<View></View>
 			)
 		}
+	}
+
+	centerSpot(event, spot) {
+		this.map.setCenterCoordinate(spot.coordinates.latitude, spot.coordinates.longitude)
+		this.setState({
+			focusedSpot: spot._id
+		})
 	}
 }
 
@@ -61,7 +82,10 @@ const styles = StyleSheet.create({
 		top: 0,
 		left: 0,
 		zIndex: 2,
+		width: Dimensions.get('window').width,
+		textAlign: 'center',
 		paddingLeft: settings.tight_gutter,
+		paddingRight: settings.tight_gutter,
 		backgroundColor: 'transparent'
 	}
 })
