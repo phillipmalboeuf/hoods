@@ -18,6 +18,6 @@ const styles = StyleSheet.create({
 		color: settings.black,
 		fontSize: settings.body_size,
 		fontFamily: settings.body_family,
-		padding: settings.gutter
+		backgroundColor: 'transparent'
 	}
 })

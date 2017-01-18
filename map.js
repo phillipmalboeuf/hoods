@@ -13,62 +13,83 @@ Mapbox.setAccessToken('pk.eyJ1IjoicGhpbGxpcG1hbGJvZXVmIiwiYSI6IndpQUx1SDAifQ.Ie3
 
 export class HoodsMap extends Component {
 
-
 	constructor() {
 		super()
 
-		fetch('http://127.0.0.1:8080/maps/585d88efd6454d2f21de701f', {headers: {'Accept': 'application/json'}})
-		.then((response) => response.json())
-		.then((json) => {
-			this.setState(json)
-		}).done()
+		// fetch('http://127.0.0.1:8080/maps/585d88efd6454d2f21de701f', {headers: {'Accept': 'application/json'}})
+		// .then((response) => response.json())
+		// .then((json) => {
+		// 	this.setState(json)
+		// }).done()
+
+
+
+		// this.state = {
+		// 	focusedSpot: null,
+		// 	pickedUpSpot: null
+		// }
+
+		this.state = {'center': {'longitude': -73.58, 'latitude': 45.532}, 'zoom': 13.0, 'tags': ['restaurants'], 'direction': 0.0, '_id': '585d88efd6454d2f21de701f', 'style': 'mapbox://styles/phillipmalboeuf/ciurepz8o00fr2io26rhn8nuw?test', 'title': "Phil's Map", 'spots': [{'description': 'A short insightful description of this spot', '_id': '585d88efd6454d2f21de702f', 'title': "L'entre-pots", 'coordinates': {'longitude': -73.582633, 'latitude': 45.538926}, 'category': 'coffee'}, {'description': 'A short insightful description of this spot', '_id': '585d88efd6454d2f21de703f', 'title': 'Home', 'coordinates': {'longitude': -73.579264, 'latitude': 45.539226}, 'category': 'home'}]}
 	}
 
 	render() {
 
-		if (this.state != undefined) {
-			return (
-				<View>
-					<HoodsText style={styles.title}>{this.state.title}</HoodsText>
-					<MapView style={styles.map}
-						ref={map => { this.map = map }}
-						styleURL={this.state.style}
-						initialCenterCoordinate={{
-							latitude: this.state.center.latitude,
-							longitude: this.state.center.longitude
-						}}
-						initialZoomLevel={this.state.zoom}
-						annotationsPopUpEnabled={false}
-						pitchEnabled={false}
-						compassIsHidden={true}
-						logoIsHidden={true}>
+		return (
+			<View>
+				<HoodsText style={styles.title}>{this.state.title}</HoodsText>
+				{this.state.title &&
+				<MapView style={styles.map}
+					ref={map => { this.map = map }}
+					styleURL={this.state.style}
+					initialCenterCoordinate={{
+						latitude: this.state.center.latitude,
+						longitude: this.state.center.longitude
+					}}
+					initialZoomLevel={this.state.zoom}
+					annotationsPopUpEnabled={false}
+					pitchEnabled={false}
+					compassIsHidden={true}
+					logoIsHidden={true}
+					attributionButtonIsHidden={true}
+					debugActive={false}
+					// onTap={()=>{alert('tap')}}
+					onRegionDidChange={this.panned.bind(this)}>
 
-						{this.state.spots.map(spot => (
-							<HoodsSpot 
-								_id={spot._id} key={spot._id}
-								title={spot.title}
-								description={spot.description}
-								coordinates={spot.coordinates}
-								category={spot.category}
-								isFocused={spot._id == this.state.focusedSpot}
-								onPress={this.centerSpot.bind(this)} />
-						))}
-
-					</MapView>
-				</View>
-			)
-		} else {
-			return (
-				<View></View>
-			)
-		}
+					{this.state.spots.map(spot => (
+						<HoodsSpot 
+							_id={spot._id} key={spot._id}
+							title={spot.title}
+							description={spot.description}
+							coordinates={spot.coordinates}
+							category={spot.category}
+							isFocused={spot._id == this.state.focusedSpot}
+							isPickedUp={spot._id == this.state.pickedUpSpot}
+							onPress={this.centerSpot.bind(this)}
+							onPickUp={this.pickUp.bind(this)}
+							onDropDown={this.dropDown.bind(this)} />
+					))}
+				</MapView>
+				}
+			</View>
+		)
 	}
 
 	centerSpot(event, spot) {
 		this.map.setCenterCoordinate(spot.coordinates.latitude, spot.coordinates.longitude)
-		this.setState({
-			focusedSpot: spot._id
-		})
+		this.setState({ focusedSpot: spot._id })
+	}
+
+	pickUp(event, spot) {
+		this.map.setCenterCoordinate(spot.coordinates.latitude, spot.coordinates.longitude)
+		this.setState({ pickedUpSpot: spot._id })
+	}
+
+	dropDown(event, spot) {
+		this.setState({ pickedUpSpot: null })
+	}
+
+	panned(event) {
+		// console.warn(event.latitude + ":" + event.longitude)
 	}
 }
 
@@ -83,10 +104,8 @@ const styles = StyleSheet.create({
 		left: 0,
 		zIndex: 2,
 		width: Dimensions.get('window').width,
-		textAlign: 'center',
-		paddingLeft: settings.tight_gutter,
-		paddingRight: settings.tight_gutter,
-		backgroundColor: 'transparent'
+		padding: settings.gutter,
+		textAlign: 'center'
 	}
 })
 

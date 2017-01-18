@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { Animated, StyleSheet, View, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { Animated, StyleSheet, View, Dimensions } from 'react-native';
 
 import { settings } from './settings.js';
 import { HoodsText } from './text.js';
-import { HoodsImage } from './image.js';
-
+import { HoodsButton } from './button.js';
+import { HoodsButtonGroup } from './button_group.js';
 
 
 export class HoodsPopup extends Component {
 
-	state: any;
 
 	constructor() {
 		super()
@@ -20,21 +19,25 @@ export class HoodsPopup extends Component {
 
 	componentDidMount() {
 		Animated.timing(
-			this.state.fade,
-			{
-				toValue: 1,
-				duration: settings.fast
-			}
+			this.state.fade, { toValue: 1, duration: settings.fast }
 		).start()
+	}
+
+	openDirections() {
+
 	}
 
 	render() {
 		return (
 			<Animated.View style={[styles.popup, {opacity: this.state.fade}]}>
-				<HoodsText style={styles.popup_text}>{this.props.title}</HoodsText>
+				<HoodsText style={styles.text}>{this.props.title}</HoodsText>
 				{this.props.body &&
-					<HoodsText style={[styles.popup_text, styles.small_popup_text]}>{this.props.body}</HoodsText>
+					<HoodsText style={[styles.text, styles.text_small]}>{this.props.body}</HoodsText>
 				}
+				<HoodsButtonGroup style={styles.buttons}>
+					<HoodsButton onPress={this.openDirections.bind(this)}>Directions</HoodsButton>
+					<HoodsButton onPress={this.props.onPickUp}>Pick Up</HoodsButton>
+				</HoodsButtonGroup>
 			</Animated.View>
 		)
 	}
@@ -42,20 +45,21 @@ export class HoodsPopup extends Component {
 
 const styles = StyleSheet.create({
 	popup: {
-		width: Dimensions.get('window').width-settings.gutter,
-		padding: settings.tight_gutter,
 		position: 'absolute',
 		bottom: 32,
 		left: -(Dimensions.get('window').width-settings.gutter-settings.spot_size)/2,
 		zIndex: 3,
+		
+		width: Dimensions.get('window').width-settings.gutter,
+		padding: settings.tight_gutter,
+
 		borderRadius: settings.border_radius,
 		backgroundColor: settings.black
 	},
-	popup_text: {
-		color: settings.white,
-		padding: 0
+	text: {
+		color: settings.white
 	},
-	small_popup_text: {
+	text_small: {
 		fontSize: settings.small_size
 	}
 })
