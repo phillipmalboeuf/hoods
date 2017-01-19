@@ -15,8 +15,7 @@ export class HoodsApp extends Component {
 		return (
 			<View>
 				<HoodsMap />
-				<HoodsText>Find the hidden gems of your neighborhood and share your collection with your friends.</HoodsText>
-				<HoodsButton>Text</HoodsButton>
+				<HoodsText style={{padding: settings.gutter}}>Find the hidden gems of your neighborhood and share your collection with your friends.</HoodsText>
 			</View>
 		)
 	}

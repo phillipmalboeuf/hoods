@@ -9,7 +9,6 @@ import { HoodsImage } from './image.js';
 import { HoodsButton } from './button.js';
 import { HoodsPopup } from './popup.js';
 
-const util = require('util')
 
 export class HoodsSpot extends Component {
 
@@ -21,14 +20,13 @@ export class HoodsSpot extends Component {
 		}
 	}
 
-	componentDidUpdate() {
-		
-	}
-
 	render() {
 
 		return (
-			<Annotation id={this.props._id} style={styles.spot}
+			<Annotation id={this.props._id}
+				style={[styles.spot,
+					this.props.isFocused ? styles.spot_focused : {}
+				]}
 				coordinate={{
 					latitude: this.props.coordinates.latitude,
 					longitude: this.props.coordinates.longitude
@@ -38,11 +36,18 @@ export class HoodsSpot extends Component {
 				<HoodsPopup
 					title={this.props.title}
 					body={this.props.description}
+					isPickedUp={this.props.isPickedUp}
 					onPickUp={this.pickUp.bind(this)}
-					onDropDown={this.dropDown.bind(this)} />
+					onDropDown={this.dropDown.bind(this)}
+					onClose={this.close.bind(this)} />
 				}
 
-				<HoodsButton style={styles.button} onPress={this.pressSpot.bind(this)}>
+				<HoodsButton 
+					style={[styles.button, 
+						this.props.isFocused ? styles.button_focused : {},
+						this.props.isPickedUp ? styles.button_picked_up : {}
+					]}
+					onPress={this.pressSpot.bind(this)}>
 					<HoodsImage style={styles.icon} resizeMode='contain'
 						source={{uri: `http://localhost:8080/files/${this.props.category}.png`}} />
 				</HoodsButton>
@@ -55,23 +60,40 @@ export class HoodsSpot extends Component {
 	}
 
 	pickUp(event) {
-		console.warn('pick up')
 		this.props.onPickUp(event, this.props)
 	}
 
+	close(event) {
+		this.props.onClose(event)
+	}
+
 	dropDown(event) {
-		console.warn('drop down')
 		this.props.onDropDown(event, this.props)
 	}
 }
 
 const styles = StyleSheet.create({
 	spot: {
+		position: 'absolute',
 		width: settings.spot_size,
-		height: settings.spot_size
+		height: settings.spot_size,
+	},
+	spot_focused: {
+		zIndex: 1,
+		width: Dimensions.get('window').width-settings.gutter,
+		height: settings.popup_height+settings.spot_size
 	},
 	button: {
+		position: 'absolute',
+		padding: 0,
 		backgroundColor: 'transparent'
+	},
+	button_focused: {
+		bottom: settings.popup_height-(settings.spot_size*1.666),
+		left: (Dimensions.get('window').width-settings.gutter)/2-settings.spot_size/2
+	},
+	button_picked_up: {
+		opacity: 0.666
 	},
 	icon: {
 		width: settings.spot_size,

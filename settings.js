@@ -11,6 +11,7 @@ export const settings = {
 	tight_gutter: 7,
 	border_radius: 3,
 	spot_size: 32,
+	popup_height: 88,
 	fast: 333,
 	slow: 666
 }

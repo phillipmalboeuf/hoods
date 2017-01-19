@@ -19,12 +19,8 @@ export class HoodsPopup extends Component {
 
 	componentDidMount() {
 		Animated.timing(
-			this.state.fade, { toValue: 1, duration: settings.fast }
+			this.state.fade, { toValue: 1, duration: 0 }
 		).start()
-	}
-
-	openDirections() {
-
 	}
 
 	render() {
@@ -35,8 +31,11 @@ export class HoodsPopup extends Component {
 					<HoodsText style={[styles.text, styles.text_small]}>{this.props.body}</HoodsText>
 				}
 				<HoodsButtonGroup style={styles.buttons}>
-					<HoodsButton onPress={this.openDirections.bind(this)}>Directions</HoodsButton>
-					<HoodsButton onPress={this.props.onPickUp}>Pick Up</HoodsButton>
+					{this.props.isPickedUp ? 
+						<HoodsButton onPress={this.props.onDropDown}>Drop Down</HoodsButton> :
+						<HoodsButton onPress={this.props.onPickUp}>Pick Up</HoodsButton>
+					}
+					<HoodsButton onPress={this.props.onClose}>Close</HoodsButton>
 				</HoodsButtonGroup>
 			</Animated.View>
 		)
@@ -46,10 +45,11 @@ export class HoodsPopup extends Component {
 const styles = StyleSheet.create({
 	popup: {
 		position: 'absolute',
-		bottom: 32,
-		left: -(Dimensions.get('window').width-settings.gutter-settings.spot_size)/2,
+		top: -settings.popup_height/2,
+		left: 0,
 		zIndex: 3,
-		
+
+		height: settings.popup_height,
 		width: Dimensions.get('window').width-settings.gutter,
 		padding: settings.tight_gutter,
 
