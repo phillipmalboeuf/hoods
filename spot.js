@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, StyleSheet, View, Dimensions, Image, TouchableWithoutFeedback } from 'react-native';
 
-import { Annotation } from 'react-native-mapbox-gl';
-
 import { settings } from './settings.js';
 import { HoodsText } from './text.js';
 import { HoodsImage } from './image.js';
@@ -21,19 +19,16 @@ export class HoodsSpot extends Component {
 	}
 
 	render() {
-
 		return (
-			<Annotation id={this.props._id}
+			<View id={this.props._id}
 				style={[styles.spot,
 					this.props.isFocused ? styles.spot_focused : {}
-				]}
-				coordinate={{
-					latitude: this.props.coordinates.latitude,
-					longitude: this.props.coordinates.longitude
-				}}>
+				]}>
 
 				{this.props.isFocused &&
 				<HoodsPopup
+					x={this.props.x}
+					y={this.props.y}
 					title={this.props.title}
 					body={this.props.description}
 					isPickedUp={this.props.isPickedUp}
@@ -42,16 +37,21 @@ export class HoodsSpot extends Component {
 					onClose={this.close.bind(this)} />
 				}
 
+
 				<HoodsButton 
 					style={[styles.button, 
 						this.props.isFocused ? styles.button_focused : {},
-						this.props.isPickedUp ? styles.button_picked_up : {}
+						this.props.isPickedUp ? styles.button_picked_up : {},
+						{
+							bottom: this.props.y,
+							left: this.props.x
+						}
 					]}
 					onPress={this.pressSpot.bind(this)}>
 					<HoodsImage style={styles.icon} resizeMode='contain'
-						source={{uri: `http://localhost:8080/files/${this.props.category}.png`}} />
+						source={{uri: `https://hoods.apps.deming.tech/files/${this.props.category}.png`}} />
 				</HoodsButton>
-			</Annotation>
+			</View>
 		)
 	}
 
@@ -74,23 +74,24 @@ export class HoodsSpot extends Component {
 
 const styles = StyleSheet.create({
 	spot: {
-		position: 'absolute',
-		width: settings.spot_size,
-		height: settings.spot_size,
+		// position: 'absolute',
+		
 	},
 	spot_focused: {
-		zIndex: 1,
-		width: Dimensions.get('window').width-settings.gutter,
-		height: settings.popup_height+settings.spot_size
+		// width: Dimensions.get('window').width-settings.gutter,
+		// height: settings.popup_height+settings.spot_size
 	},
 	button: {
 		position: 'absolute',
+		width: settings.spot_size,
+		height: settings.spot_size,
+		// zIndex: 3
 		padding: 0,
 		backgroundColor: 'transparent'
 	},
 	button_focused: {
-		bottom: settings.popup_height-(settings.spot_size*1.666),
-		left: (Dimensions.get('window').width-settings.gutter)/2-settings.spot_size/2
+		// bottom: settings.popup_height-(settings.spot_size*1.666),
+		// left: (Dimensions.get('window').width-settings.gutter)/2-settings.spot_size/2
 	},
 	button_picked_up: {
 		opacity: 0.666

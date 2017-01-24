@@ -25,7 +25,12 @@ export class HoodsPopup extends Component {
 
 	render() {
 		return (
-			<Animated.View style={[styles.popup, {opacity: this.state.fade}]}>
+			<Animated.View style={[styles.popup, 
+				{
+					opacity: this.state.fade,
+					bottom: this.props.y+settings.spot_size,
+					left: this.props.x-(Dimensions.get('window').width-settings.gutter-settings.spot_size)/2
+				}]}>
 				<HoodsText style={styles.text}>{this.props.title}</HoodsText>
 				{this.props.body &&
 					<HoodsText style={[styles.text, styles.text_small]}>{this.props.body}</HoodsText>
@@ -45,11 +50,7 @@ export class HoodsPopup extends Component {
 const styles = StyleSheet.create({
 	popup: {
 		position: 'absolute',
-		top: -settings.popup_height/2,
-		left: 0,
-		zIndex: 3,
 
-		height: settings.popup_height,
 		width: Dimensions.get('window').width-settings.gutter,
 		padding: settings.tight_gutter,
 

@@ -15,11 +15,14 @@ export class HoodsApp extends Component {
 		return (
 			<View>
 				<HoodsMap />
-				<HoodsText style={{padding: settings.gutter}}>Find the hidden gems of your neighborhood and share your collection with your friends.</HoodsText>
+
+				<View style={{padding: settings.gutter}}>
+					<HoodsText>Find the hidden gems of your neighborhood and share your collection with your friends.</HoodsText>
+					<HoodsButton>Button</HoodsButton>
+				</View>
 			</View>
 		)
 	}
 }
-
 
 

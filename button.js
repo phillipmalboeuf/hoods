@@ -14,7 +14,7 @@ export class HoodsButton extends Component {
 	}
 
 	render () {
-		return <TouchableWithoutFeedback 
+		return <TouchableWithoutFeedback
 			onPress={this.props.onPress} 
 			onPressIn={()=>{this.setState({pressed: true})}} 
 			onPressOut={()=>{this.setState({pressed: false})}}>
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 	},
 	button_pressed: {
 		transform: [{
-			scale: 0.9
+			translateY: 1
 		}]
 	},
 	text: {
