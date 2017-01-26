@@ -4,13 +4,13 @@ import { Image, StyleSheet, Dimensions } from 'react-native';
 import { settings } from './settings.js';
 
 
-export class HoodsImage extends Component {
+export const HoodsImage = (props) => {
 
-	render() {
-		return (
-			<Image style={[styles.image, this.props.style]} resizeMode={this.props.resizeMode} source={this.props.source} />
-		)
-	}
+	return (
+		<Image style={[styles.image, props.style]}
+			resizeMode={props.resizeMode}
+			source={props.source} />
+	)
 }
 
 const styles = StyleSheet.create({

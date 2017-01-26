@@ -19,6 +19,7 @@ export class HoodsSpot extends Component {
 	}
 
 	render() {
+
 		return (
 			<View id={this.props._id}
 				style={[styles.spot,
@@ -38,13 +39,15 @@ export class HoodsSpot extends Component {
 				}
 
 
-				<HoodsButton 
+				<HoodsButton
+					transparent
 					style={[styles.button, 
 						this.props.isFocused ? styles.button_focused : {},
+						this.props.isMoving ? styles.button_hide : {},
 						this.props.isPickedUp ? styles.button_picked_up : {},
 						{
-							bottom: this.props.y,
-							left: this.props.x
+							bottom: this.props.y+(settings.spot_size/4),
+							left: this.props.x-(settings.spot_size/2)
 						}
 					]}
 					onPress={this.pressSpot.bind(this)}>
@@ -74,24 +77,22 @@ export class HoodsSpot extends Component {
 
 const styles = StyleSheet.create({
 	spot: {
-		// position: 'absolute',
-		
+		// opacity: 1
 	},
 	spot_focused: {
-		// width: Dimensions.get('window').width-settings.gutter,
-		// height: settings.popup_height+settings.spot_size
+
 	},
 	button: {
 		position: 'absolute',
 		width: settings.spot_size,
 		height: settings.spot_size,
-		// zIndex: 3
-		padding: 0,
-		backgroundColor: 'transparent'
+		padding: 0
 	},
 	button_focused: {
-		// bottom: settings.popup_height-(settings.spot_size*1.666),
-		// left: (Dimensions.get('window').width-settings.gutter)/2-settings.spot_size/2
+		
+	},
+	button_hide: {
+		opacity: 0
 	},
 	button_picked_up: {
 		opacity: 0.666

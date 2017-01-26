@@ -18,8 +18,12 @@ export class HoodsButton extends Component {
 			onPress={this.props.onPress} 
 			onPressIn={()=>{this.setState({pressed: true})}} 
 			onPressOut={()=>{this.setState({pressed: false})}}>
-				<Animated.View style={[styles.button, this.state.pressed ? styles.button_pressed:{}, this.props.style]}>
-					<HoodsText style={styles.text}>{this.props.children}</HoodsText>
+				<Animated.View style={[styles.button,
+						this.state.pressed ? styles.button_pressed:{},
+						this.props.transparent ? styles.button_transparent:{},
+						this.props.style
+					]}>
+					{this.props.children}
 				</Animated.View>
 			</TouchableWithoutFeedback>
 	}
@@ -31,6 +35,9 @@ const styles = StyleSheet.create({
 		paddingTop: settings.gutter/10,
 		paddingBottom: settings.gutter/10,
 		backgroundColor: settings.black
+	},
+	button_transparent: {
+		backgroundColor: 'transparent'
 	},
 	button_pressed: {
 		transform: [{

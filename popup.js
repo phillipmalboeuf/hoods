@@ -19,7 +19,7 @@ export class HoodsPopup extends Component {
 
 	componentDidMount() {
 		Animated.timing(
-			this.state.fade, { toValue: 1, duration: 0 }
+			this.state.fade, { toValue: 1, duration: settings.fast }
 		).start()
 	}
 
@@ -37,10 +37,10 @@ export class HoodsPopup extends Component {
 				}
 				<HoodsButtonGroup style={styles.buttons}>
 					{this.props.isPickedUp ? 
-						<HoodsButton onPress={this.props.onDropDown}>Drop Down</HoodsButton> :
-						<HoodsButton onPress={this.props.onPickUp}>Pick Up</HoodsButton>
+						<HoodsButton transparent onPress={this.props.onDropDown}><HoodsText small light>Drop Down</HoodsText></HoodsButton> :
+						<HoodsButton transparent onPress={this.props.onPickUp}><HoodsText small light>Pick Up</HoodsText></HoodsButton>
 					}
-					<HoodsButton onPress={this.props.onClose}>Close</HoodsButton>
+					<HoodsButton transparent onPress={this.props.onClose}><HoodsText small light>Close</HoodsText></HoodsButton>
 				</HoodsButtonGroup>
 			</Animated.View>
 		)
